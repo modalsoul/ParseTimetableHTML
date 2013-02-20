@@ -1,0 +1,576 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <META http-equiv="Content-Style-Type" content="text/css">
+    <title>京浜急行バス　時刻表検索</title>
+    <link href="/dia/timetable/css/style.css" rel="stylesheet" type="text/css">
+    <script language="javascript" type="text/javascript" src="/dia/timetable/js/jquery.js"></script>
+    <script type="text/javascript"><!--
+      $(document).ready(function(){
+        $("#side a.menu, #main a#submit, #main a.post").each(function() {
+          // メニュー切り替えとページ遷移時にフォームの値を継承
+          $(this).click(function() {
+            $("#search").attr("action", $(this).attr('href'));
+            $("#search").submit();
+            return false;
+          });
+        });
+        (function($) {
+          // パンくず操作
+          var path = location.pathname;
+          var current =
+            path.match(/\/web\/\d+\/\d+\//)       ? '検索結果' :
+            path.match(/\/web\/any\/\d+\/$/)      ? '停車停留所一覧' :
+            path.match(/\/web\/\d+\/$/)           ? '系統一覧' :
+            path.match(/\/web\/syllabary\/.+\/$/) ? '50音から選択' :
+            path.match(/\/web\/landmark\/\d+\/$/) ? '観光地・施設名から選択' : ''
+          ;
+          if (0 < current.length) {
+            var limit = path.split("/").length - 4;
+            var link = '';
+            for (i=0; i<limit; i++) { link += '../'; }
+            $("#breadcrumbs>ol>li:last").html('<a href="' + link + '">時刻表検索</a> &gt; ');
+            $("#breadcrumbs>ol").append('<li>' + current + '</li>');
+          }
+        })(jQuery);
+      });
+    --></script>
+  </head>
+  <body>
+    <div id="container">
+<!-- ここからヘッダ -->
+      <div id="header">
+        <h1><a href="http://www.keikyu-bus.co.jp/"><img src="/dia/timetable/images/logo01.jpg" title="京浜急行バス"></a><img src="/dia/timetable/images/head_bg_sky.jpg"></h1>
+      </div>
+<!-- ここまでヘッダ -->
+<!-- ここからパンくず -->
+      <div id="breadcrumbs">
+        <ol>
+          <li><a href="http://www.keikyu-bus.co.jp/">京急バスホーム</a> &gt; </li>
+          <li><a href="/">時刻表・経路・運賃検索</a> &gt; </li>
+          <li>時刻表検索</li>
+        </ol>
+      </div>
+<!-- ここまでパンくず -->
+      <div id="contents">
+<!-- ここからメインエリア -->
+        <script type="text/javascript"><!--
+          function LinkPdf() {
+            url = "/dia/timetable/web/51174/1020021012/pdf/"
+            $("#search").attr("action", url);
+            $("#search").submit();
+            return false;
+          }
+        --></script>
+        <div id="main" class="block_a">
+          <h3>
+            <a href="/dia/timetable/web/51174/">蒲田駅</a><br>
+            系統：<a href="/dia/timetable/web/any/1020021012/">森50 東邦大学 大森駅 ゆき</a><br>
+            <span class="sub">乗車日付：2013年01月05日</span>
+          </h3>
+          <!-- 時刻表ヘッダ -->
+          <h4>森５０ 大森駅 ゆき</h4>
+          <p class="timetable right">
+            <input type='button' value='印刷用PDF' onclick="window.open('/pdf/01500080120090216.pdf', 'view');">
+          </p>
+          <!-- 時刻表ヘッダ -->
+          <!-- 時刻表本体 -->
+          <table class="timetable">
+            <tr>
+              <th>時</th>
+              
+              <th class="week">
+                平日
+              </th>
+              
+              <th class="week">
+                土曜
+              </th>
+              
+              <th class="week">
+                休日
+              </th>
+              
+            </tr>
+            <tr>
+              <th class="hour">6</th>
+              <td>
+              <span class="smaller"></span>28
+              <span class="smaller"></span>45
+              <span class="smaller"></span>59
+              </td>
+              <td>
+              <span class="smaller"></span>28
+              <span class="smaller"></span>45
+              <span class="smaller"></span>59
+              </td>
+              <td>
+              <span class="smaller"></span>28
+              <span class="smaller"></span>45
+              <span class="smaller"></span>59
+              </td>
+            <tr>
+              <th class="hour">7</th>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>14
+              <span class="smaller"></span>23
+              <span class="smaller"></span>32
+              <span class="smaller"></span>41
+              <span class="smaller"></span>48
+              <span class="smaller"></span>54
+              </td>
+              <td>
+              <span class="smaller"></span>08
+              <span class="smaller"></span>16
+              <span class="smaller"></span>24
+              <span class="smaller"></span>32
+              <span class="smaller"></span>40
+              <span class="smaller"></span>48
+              <span class="smaller"></span>56
+              </td>
+              <td>
+              <span class="smaller"></span>08
+              <span class="smaller"></span>16
+              <span class="smaller"></span>24
+              <span class="smaller"></span>32
+              <span class="smaller"></span>40
+              <span class="smaller"></span>48
+              <span class="smaller"></span>56
+              </td>
+            <tr>
+              <th class="hour">8</th>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>07
+              <span class="smaller"></span>12
+              <span class="smaller"></span>19
+              <span class="smaller"></span>25
+              <span class="smaller"></span>31
+              <span class="smaller"></span>37
+              <span class="smaller"></span>43
+              <span class="smaller"></span>49
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>12
+              <span class="smaller"></span>20
+              <span class="smaller"></span>28
+              <span class="smaller"></span>36
+              <span class="smaller"></span>44
+              <span class="smaller"></span>52
+              </td>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>12
+              <span class="smaller"></span>20
+              <span class="smaller"></span>28
+              <span class="smaller"></span>36
+              <span class="smaller"></span>44
+              <span class="smaller"></span>52
+              </td>
+            <tr>
+              <th class="hour">9</th>
+              <td>
+              <span class="smaller"></span>01
+              <span class="smaller"></span>07
+              <span class="smaller"></span>13
+              <span class="smaller"></span>19
+              <span class="smaller"></span>26
+              <span class="smaller"></span>33
+              <span class="smaller"></span>40
+              <span class="smaller"></span>47
+              <span class="smaller"></span>54
+              </td>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>08
+              <span class="smaller"></span>16
+              <span class="smaller"></span>24
+              <span class="smaller"></span>32
+              <span class="smaller"></span>40
+              <span class="smaller"></span>48
+              <span class="smaller"></span>56
+              </td>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>08
+              <span class="smaller"></span>16
+              <span class="smaller"></span>24
+              <span class="smaller"></span>32
+              <span class="smaller"></span>40
+              <span class="smaller"></span>48
+              <span class="smaller"></span>56
+              </td>
+            <tr>
+              <th class="hour">10</th>
+              <td>
+              <span class="smaller"></span>01
+              <span class="smaller"></span>08
+              <span class="smaller"></span>15
+              <span class="smaller"></span>22
+              <span class="smaller"></span>29
+              <span class="smaller"></span>37
+              <span class="smaller"></span>46
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>12
+              <span class="smaller"></span>20
+              <span class="smaller"></span>28
+              <span class="smaller"></span>36
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>12
+              <span class="smaller"></span>20
+              <span class="smaller"></span>28
+              <span class="smaller"></span>36
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">11</th>
+              <td>
+              <span class="smaller"></span>06
+              <span class="smaller"></span>17
+              <span class="smaller"></span>27
+              <span class="smaller"></span>39
+              <span class="smaller"></span>50
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">12</th>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>10
+              <span class="smaller"></span>20
+              <span class="smaller"></span>30
+              <span class="smaller"></span>40
+              <span class="smaller"></span>50
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">13</th>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>10
+              <span class="smaller"></span>20
+              <span class="smaller"></span>31
+              <span class="smaller"></span>42
+              <span class="smaller"></span>53
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">14</th>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>15
+              <span class="smaller"></span>26
+              <span class="smaller"></span>37
+              <span class="smaller"></span>48
+              <span class="smaller"></span>59
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">15</th>
+              <td>
+              <span class="smaller"></span>10
+              <span class="smaller"></span>21
+              <span class="smaller"></span>32
+              <span class="smaller"></span>43
+              <span class="smaller"></span>54
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">16</th>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>16
+              <span class="smaller"></span>26
+              <span class="smaller"></span>38
+              <span class="smaller"></span>46
+              <span class="smaller"></span>54
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">17</th>
+              <td>
+              <span class="smaller"></span>01
+              <span class="smaller"></span>08
+              <span class="smaller"></span>15
+              <span class="smaller"></span>22
+              <span class="smaller"></span>29
+              <span class="smaller"></span>36
+              <span class="smaller"></span>43
+              <span class="smaller"></span>50
+              <span class="smaller"></span>56
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>23
+              <span class="smaller"></span>31
+              <span class="smaller"></span>39
+              <span class="smaller"></span>47
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>15
+              <span class="smaller"></span>23
+              <span class="smaller"></span>31
+              <span class="smaller"></span>39
+              <span class="smaller"></span>47
+              <span class="smaller"></span>55
+              </td>
+            <tr>
+              <th class="hour">18</th>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>11
+              <span class="smaller"></span>18
+              <span class="smaller"></span>25
+              <span class="smaller"></span>32
+              <span class="smaller"></span>39
+              <span class="smaller"></span>47
+              <span class="smaller"></span>55
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>13
+              <span class="smaller"></span>21
+              <span class="smaller"></span>29
+              <span class="smaller"></span>37
+              <span class="smaller"></span>45
+              <span class="smaller"></span>53
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>13
+              <span class="smaller"></span>21
+              <span class="smaller"></span>29
+              <span class="smaller"></span>37
+              <span class="smaller"></span>45
+              <span class="smaller"></span>53
+              </td>
+            <tr>
+              <th class="hour">19</th>
+              <td>
+              <span class="smaller"></span>03
+              <span class="smaller"></span>10
+              <span class="smaller"></span>18
+              <span class="smaller"></span>26
+              <span class="smaller"></span>35
+              <span class="smaller"></span>45
+              <span class="smaller"></span>54
+              </td>
+              <td>
+              <span class="smaller"></span>01
+              <span class="smaller"></span>09
+              <span class="smaller"></span>17
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>47
+              </td>
+              <td>
+              <span class="smaller"></span>01
+              <span class="smaller"></span>09
+              <span class="smaller"></span>17
+              <span class="smaller"></span>25
+              <span class="smaller"></span>35
+              <span class="smaller"></span>47
+              </td>
+            <tr>
+              <th class="hour">20</th>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>14
+              <span class="smaller"></span>24
+              <span class="smaller"></span>34
+              <span class="smaller"></span>44
+              <span class="smaller"></span>54
+              </td>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>11
+              <span class="smaller"></span>23
+              <span class="smaller"></span>35
+              <span class="smaller"></span>48
+              </td>
+              <td>
+              <span class="smaller"></span>00
+              <span class="smaller"></span>11
+              <span class="smaller"></span>23
+              <span class="smaller"></span>35
+              <span class="smaller"></span>48
+              </td>
+            <tr>
+              <th class="hour">21</th>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>14
+              <span class="smaller"></span>24
+              <span class="smaller"></span>35
+              <span class="smaller"></span>47
+              <span class="smaller"></span>59
+              </td>
+              <td>
+              <span class="smaller"></span>02
+              <span class="smaller"></span>17
+              <span class="smaller"></span>31
+              <span class="smaller"></span>48
+              </td>
+              <td>
+              <span class="smaller"></span>02
+              <span class="smaller"></span>17
+              <span class="smaller"></span>31
+              <span class="smaller"></span>48
+              </td>
+            <tr>
+              <th class="hour">22</th>
+              <td>
+              <span class="smaller"></span>12
+              <span class="smaller"></span>22
+              <span class="smaller"></span>35
+              <span class="smaller"></span>48
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>25
+              <span class="smaller"></span>45
+              </td>
+              <td>
+              <span class="smaller"></span>05
+              <span class="smaller"></span>25
+              <span class="smaller"></span>45
+              </td>
+            <tr>
+              <th class="hour">23</th>
+              <td>
+              <span class="smaller"></span>04
+              <span class="smaller"></span>17
+              <span class="smaller"></span>30
+              </td>
+              <td>
+              <span class="smaller"></span>03
+              </td>
+              <td>
+              <span class="smaller"></span>03
+              </td>
+            </tr>
+          </table>
+          <!-- 時刻表本体 -->
+          <form action="#" method="post" id="search" name="search">
+            <input type="hidden" id="date" name="date" value="20130105">
+          </form>
+        </div>
+<!-- ここまでメインエリア -->
+      </div>
+<!-- ここからフッタ -->
+      <div id="footer">
+        <div id="copyright">
+          2012 &copy; Keihin Kyuko Bus Co.,LTD. All rights reserved.
+        </div>
+      </div>
+<!-- ここまでフッタ -->
+    </div>
+  </body>
+</html>
