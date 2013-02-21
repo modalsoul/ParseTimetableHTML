@@ -2,6 +2,7 @@
 package scalamin
 
 import java.io.StringReader
+import scala.xml.Text
 import scala.xml.Node
 import scala.xml.parsing.NoBindingFactoryAdapter
 import nu.validator.htmlparser.sax.HtmlParser
@@ -14,18 +15,19 @@ object Hello {
   def main(args:Array[String]) = {
     val str = FileUtils.readFileToString(new File("sample.xml"))
         
-    val node = toNode(str)
+    val tableNode = (toNode(str) \\ "table").filter(_ \ "@class" contains Text("timetable"))
     
-    val trNodes = node \\ "table" \\ "tr"
+    val trNodes = (tableNode \\ "tr").filter(_ \\ "th" \ "@class" contains Text("hour"))
     
     trNodes.foreach { rowNode =>
+      var hour=(rowNode \\ "th").text + ", "
       (rowNode \\ "td").foreach { tdNodes =>
         tdNodes.foreach { tableData =>
-          print(tableData.text.trim.stripLineEnd)
+          println(hour + tableData.text.trim.replaceAll(" ", "").replaceAll("\n", ", "))
         }
       }
     }
-  
+    
     println("Hello Scala!")
   }
   
