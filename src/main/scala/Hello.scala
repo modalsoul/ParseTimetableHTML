@@ -20,37 +20,34 @@ object Hello {
     
     val weekTypeNum = (tableNode \\ "tr" \\ "th").filter(_ \ "@class" contains Text("week")).size
     
-    val hourList = (tableNode \\ "tr" \\ "th").filter(_ \ "@class" contains Text("hour"))
+    val hourList = (tableNode \\ "tr" \\ "th").filter(_ \ "@class" contains Text("hour")).text
     
     val trNodeList = (tableNode \\ "tr").filter(_ \\ "th" \ "@class" contains Text("hour"))
     
-    val timeList = Array.ofDim[String](weekTypeNum, 10)
+    val timeList = Array.ofDim[String](weekTypeNum, hourList.size, 10)
     
     trNodeList.foreach { rowNode =>
       var hour=(rowNode \\ "th").text
       val tdNodeList = rowNode \\ "td"
       
       //(rowNode \\ "td").foreach { tdNodeList =>
-      for ( week <- 0 to weekTypeNum-1) {
+      for ( currentHour <- 0 to hourList.size-1) {
+        for ( currentWeek <- 0 to weekTypeNum-1) {
+          val minuteList = tdNodeList(currentWeek).text.replaceAll(" ", "").split("\n").filter(_ != "")
+          for ( currentMinute <- 0 to minuteList.size-1) {
+            timeList(currentWeek)(currentHour)(currentMinute) = hourList(currentHour) + ":" + minuteList(currentMinute)
+          }
         //tdNodeList.foreach { tableData =>
-        val tableData = tdNodeList(week)
-          //val minuteList = tableData.text.replaceAll(" ", "").split("\n").filter(_ != "")
-        val minuteList = tableData.text.replaceAll(" ", "").split("\n").filter(_ != "")
-        for ( currentNum <- 0 to minuteList.size-1) {
-          
-          //minuteList.foreach { minute =>
-            //println(hour + ":" + time)
-          //  timeList(currentWeek)(num) = hour + ":" + minute 
-          //}
-          timeList(week)(currentNum) = hour + ":" + minuteList(currentNum)
-          //println(hour + tableData.text.trim.replaceAll(" ", "").replaceAll("\n", ", "))
+        
         }
       }
     }
     
     timeList.foreach { time =>
-    	time.foreach { smalltime =>
-    		println(smalltime)
+      time.foreach { smalltime =>
+    		smalltime.foreach { minutes =>
+    		  println(minutes)
+    		}
     	}
     }
     
