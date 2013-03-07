@@ -13,9 +13,20 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import io.Source
 
+
 object Hello {
+//  val hoge = new MappingRoute
+//  hoge.testSqlite
+
+  val hoge = new Route
+  hoge.getBusStopIDList("1020021011")
+
+  var routeName = ""
+
   def main(args:Array[String]) = {
-    val src = Source.fromURL("http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/any/1020021011/", "Shift_JIS")
+    /*
+//    val src = Source.fromURL("http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/any/1020021011/", "Shift_JIS")
+    val src = Source.fromURL("http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/any/1020021012/", "Shift_JIS")
 
     val str = src.mkString
 
@@ -23,7 +34,7 @@ object Hello {
 
     val nodeList = toNode(str)
 
-    val routeName = ((nodeList \\ "h3").text.replaceAll(" ", "").split("\n"))(1).split("「")(1).split("」")(0)
+    this.routeName = ((nodeList \\ "h3").text.replaceAll(" ", "").split("\n"))(1).split("「")(1).split("」")(0)
 
     val busStopNameList =  (nodeList \\ "table").filter(_ \ "@class" contains Text("stoplist")) \\ "th"
 
@@ -36,10 +47,12 @@ object Hello {
     }
 
     for(urlNum <- 0 to timeTableURL.size-1) {
-      parseTimetable(routeName, (urlNum+1) + busStopNameList(urlNum).text, timeTableURL(urlNum))
+      parseTimetable((urlNum+1) + busStopNameList(urlNum).text, timeTableURL(urlNum))
     }
+    */
+    print("hello")
   }
-  def parseTimetable(dest:String, busStopName:String, url:String) = {
+  def parseTimetable(busStopName:String, url:String) = {
     //    val str = FileUtils.readFileToString(new File("sample.xml"))
     val src = Source.fromURL(url, "Shift_JIS")
 
@@ -65,7 +78,7 @@ object Hello {
       }
     }
     for( week <- 0 to weekTypeNum-1) {
-      writeToFile(dest, busStopName , week, timeList(week))
+      writeToFile(busStopName , week, timeList(week))
     }
     println("Hello Scala!")
   }
@@ -81,9 +94,9 @@ object Hello {
     saxer.rootElem
   }
 
-  def writeToFile(dir:String, name:String, week:Int, list:ArrayBuffer[String]) = {
+  def writeToFile(name:String, week:Int, list:ArrayBuffer[String]) = {
     val destination = "./output/"
-    val newFile = new File(destination + dir)
+    val newFile = new File(destination + this.routeName)
     newFile.mkdir()
 
     import java.io.{ FileOutputStream=>FileStream, OutputStreamWriter=>StreamWriter }
@@ -91,7 +104,7 @@ object Hello {
     val encode = "UTF-8"
     val append = true
 
-    val fileOutPutStream = new FileStream(destination + dir + "/" + name, append)
+    val fileOutPutStream = new FileStream(destination + this.routeName + "/" + name, append)
     val writer = new StreamWriter( fileOutPutStream, encode )
 
     list.foreach { time =>
