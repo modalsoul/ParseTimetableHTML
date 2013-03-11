@@ -36,19 +36,18 @@ class BusStop(routeId:String) {
       busStopIdNameList += idName
     }
 
-    val db = new DBAccess
+    val busStopDao:BusStopDao = new BusStopDao
     var insertBusStopList = new ArrayBuffer[(String, String)]
     busStopIdNameList.foreach { busStop =>
-      val id =  db.queryBusStopWebIdExistance(busStop._1)
-      if( id == -1) {
+      if( busStopDao.queryBusStopWebIdExistance(busStop._1) == 0) {
         insertBusStopList += busStop
       }
     }
-    db.insertBusStop(insertBusStopList)
+    busStopDao.insertBusStop(insertBusStopList)
 
     var busStops:String = ""
     busStopIdList.foreach { web_id =>
-      val busStopWebId = db.queryBusStopIdByWebId(web_id)
+      val busStopWebId = busStopDao.queryBusStopIdByWebId(web_id)
       busStops += busStopWebId + ","
 
       val time = new TimeTable
@@ -56,7 +55,8 @@ class BusStop(routeId:String) {
     }
     busStops = busStops.init
     val values = (routeId, busStopNameList.head, busStopNameList.last, busStops)
-    db.updateRoute(values)
+    val routeDb = new RouteDao
+    routeDb.updateRoute(values)
 
   }
   def getBusStopIdList(nodeList:NodeSeq):ArrayBuffer[String] = {
@@ -64,7 +64,8 @@ class BusStop(routeId:String) {
     nodeList.foreach { idNode =>
       val url = (idNode \ "@href").text
       val items = url.split("/")
-      busStopIdList += items(4)
+//      println("hoge:"+ items(4)+"/"+items(6))
+      busStopIdList += items(4)+"/"+items(6)
     }
     busStopIdList
   }

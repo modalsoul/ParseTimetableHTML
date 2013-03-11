@@ -20,18 +20,23 @@ class TimeTable {
   var routeName = ""
   val urlPrefix = "http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/"
 
-  def getTimetable(route_web:String, busStop_web:String) = {
-    val db = new DBAccess
-    val routeId = db.queryRouteByWebId(route_web)._1
-    val busStopId = db.queryBusStopIdByWebId(busStop_web)
+  def getTimetable(routeWeb:String, busStopWeb:String) = {
+    println(routeWeb + "/" + busStopWeb)
+    val routeDao = new RouteDao
+    val routeId = routeDao.queryRouteByWebId(routeWeb)._1
+    val busStopDao = new BusStopDao
+    val busStopId = busStopDao.queryBusStopIdByWebId(busStopWeb)
+    val busStopWebUrl = busStopWeb.split("/")
 
-    val timeTableUrl = urlPrefix + busStop_web + "/" + route_web + "/"
+    val timeTableUrl = urlPrefix + busStopWebUrl(0) + "/" + routeWeb + "/" + busStopWebUrl(1) + "/"
+
     val src  = Source.fromURL(timeTableUrl, "Shift-JIS")
     val str = src.mkString
 
     val tableNode = (toNode(str) \\ "table").filter(_ \ "@class" contains Text("timetable"))
 
     val weekTypeNum = (tableNode \\ "tr" \\ "th").filter(_ \ "@class" contains Text("week")).size
+    println(weekTypeNum)
 
     val trNodeList = (tableNode \\ "tr").filter(_ \\ "th" \ "@class" contains Text("hour"))
 
@@ -56,7 +61,9 @@ class TimeTable {
         insertTimeList += typeTime
       }
     }
-    db.insertTimeTable(insertTimeList)
+    val timeTableDao = new TimeTableDao
+
+    timeTableDao.insertTimeTable(insertTimeList)
 
   }
   def toNode(str: String): Node = {
@@ -129,8 +136,8 @@ class TimeTable {
     }
 
     val db = new DBAccess
-    val route_id = db.queryRouteByWebId(route_web)
-    val busStop_id = db.queryBusStopIdByWebId(busStop_web)
+    val route_id = db.queryRouteByWebId(routeWeb)
+    val busStop_id = db.queryBusStopIdByWebId(busStopWeb)
     for(urlNum <- 0 to timeTableURL.size-1) {
       val timeTableList = new ArrayBuffer[(Int, Int, Int, String)]
       parseTimetable((urlNum+1) + busStopNameList(urlNum).text, timeTableURL(urlNum)).foreach { typeTime =>

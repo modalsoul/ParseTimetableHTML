@@ -66,11 +66,12 @@ class Route {
 
     tokyoRouteListNode.foreach { item =>
       val route =  ((item \ "@value").text, item.text)
-      if(route._1 != "0") tokyoRouteList += route
+      // 下記路線は、時刻表ページに2路線分以上記載のため例外的に取り込まない
+      if(route._1 != "0" && route._1 != "1070121011" && route._1 != "1060107012" && route._1 != "1060107011" && route._1 != "1100204011" && route._1 != "8620106011" && route._1 != "8540091011" && route._1 != "8540091012" && route._1 != "8540096011" && route._1 != "8540096012" && route._1 != "1080141011" && route._1 != "1050152011"  && route._1 != "1050151011" && route._1 != "1130241011"  && route._1 != "1100207011") tokyoRouteList += route
     }
 
-    val dbAccess = new DBAccess
-    dbAccess.insertRoute(tokyoRouteList)
+    val routeDao = new RouteDao
+    routeDao.insertRoute(tokyoRouteList)
 
     val webIdList = new ArrayBuffer[String]
     tokyoRouteList.foreach { set =>
@@ -81,8 +82,8 @@ class Route {
 
   def getBusStopWebId(busStops:String):ArrayBuffer[String] = {
     val idList:Array[String] = busStops.split(",")
-    val db = new DBAccess
-    db.queryBusStopWebIdById(idList)
+    val busStopDao = new BusStopDao
+    busStopDao.queryBusStopWebIdById(idList)
   }
   def toNode(str: String): Node = {
     val hp = new HtmlParser
