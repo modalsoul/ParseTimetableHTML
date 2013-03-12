@@ -27,6 +27,7 @@ class Route {
   val MIURASHI_ROUTE_ID = "route_8"
   val HAYAMAMACHI_ROUTE_ID = "route_9"
 
+  val TOKYO23KU_AREA_ID = 0
 
 
   def getRouteList():ArrayBuffer[String] = {
@@ -40,7 +41,7 @@ class Route {
 
     val routeListNode:NodeSeq = (nodeList \\ "div").filter(_ \ "@class" contains Text("select_line")) \\ "p"
 
-//    val areaRouteListNode = (routeListNode \\ "select").filter(_ \ "@id" contains("select_line"))
+    //    val areaRouteListNode = (routeListNode \\ "select").filter(_ \ "@id" contains("select_line"))
 
     val tokyoRouteListNode:NodeSeq = (routeListNode \\ "select").filter(_ \ "@id" contains Text(TOKYO23KU_ROUTE_ID)) \\ "option"
 
@@ -62,12 +63,19 @@ class Route {
 
 
 
-    val tokyoRouteList = new ArrayBuffer[(String,String)]
+    val tokyoRouteList = new ArrayBuffer[(String,String,Int)]
 
     tokyoRouteListNode.foreach { item =>
-      val route =  ((item \ "@value").text, item.text)
+      val route =  ((item \ "@value").text, item.text, TOKYO23KU_AREA_ID)
       // 下記路線は、時刻表ページに2路線分以上記載のため例外的に取り込まない
-      if(route._1 != "0" && route._1 != "1070121011" && route._1 != "1060107012" && route._1 != "1060107011" && route._1 != "1100204011" && route._1 != "8620106011" && route._1 != "8540091011" && route._1 != "8540091012" && route._1 != "8540096011" && route._1 != "8540096012" && route._1 != "1080141011" && route._1 != "1050152011"  && route._1 != "1050151011" && route._1 != "1130241011"  && route._1 != "1100207011") tokyoRouteList += route
+      if(route._1 != "0" && route._1 != "1070121011" && route._1 != "1060107012" && route._1 != "1060107011" &&
+          route._1 != "1100204011" && route._1 != "8620106011" && route._1 != "8540091011" && route._1 != "8540091012" &&
+          route._1 != "8540096011" && route._1 != "8540096012" && route._1 != "1080141011" && route._1 != "1050152011" &&
+          route._1 != "1050151011" && route._1 != "1130241011" && route._1 != "1100207011" && route._1 != "1050168011" &&
+          route._1 != "1050158011" && route._1 != "1120223011" && route._1 != "1120227012" && route._1 != "1120224011" &&
+          route._1 != "1120228012" && route._1 != "1050153011" && route._1 != "1140261011" && route._1 != "1140261012" &&
+          route._1 != "1050169011" && route._1 != "8510304011" && route._1 != "8510304012" && route._1 != "8510306012" &&
+          route._1 != "8510306011" && route._1 != "8510305012" && route._1 != "1040061011") tokyoRouteList += route
     }
 
     val routeDao = new RouteDao

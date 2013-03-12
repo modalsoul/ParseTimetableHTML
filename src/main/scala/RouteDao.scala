@@ -12,7 +12,7 @@ import java.sql.{ResultSet, Statement, DriverManager, Connection}
  */
 class RouteDao {
 
-  def insertRoute(routeItems:ArrayBuffer[(String, String)]) = {
+  def insertRoute(routeItems:ArrayBuffer[(String, String, Int)]) = {
     var connection:Connection = null
     try {
       connection = DriverManager.getConnection("jdbc:sqlite:sample.db")
@@ -20,7 +20,7 @@ class RouteDao {
       val statement:Statement = connection.createStatement()
       statement.setQueryTimeout(30)
       routeItems.foreach { item =>
-        statement.executeUpdate("insert into route(web_id, route_name) values('" + item._1 + "', '" + item._2 +"')")
+        statement.executeUpdate("insert into route(web_id, route_name, area_id) values('" + item._1 + "', '" + item._2 +"', " + item._3 + ")")
       }
     } catch {
       case e:Exception =>

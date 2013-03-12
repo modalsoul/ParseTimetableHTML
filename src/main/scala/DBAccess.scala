@@ -25,7 +25,14 @@ class DBAccess {
       statement.executeUpdate("drop table if exists android_metadata")
       statement.executeUpdate("create table android_metadata (locale text default 'en_US')")
       statement.executeUpdate("drop table if exists history")
-      statement.executeUpdate("create table history (id integer primary key, route_id integer not null, bus_stop_id integer not null, id_string string unique, create_date string not null, update_date string not null)")
+      statement.executeUpdate(
+        "create table history (" +
+          "id integer primary key, " +
+          "route_id integer not null, " +
+          "bus_stop_id integer not null, " +
+          "id_string string unique, " +
+          "create_date string not null, " +
+          "update_date string not null)")
       statement.executeUpdate("drop table if exists area")
       statement.executeUpdate("create table area (id integer, name string)")
       statement.executeUpdate("insert into area values(0, '東京23区')")
@@ -52,7 +59,15 @@ class DBAccess {
       val statement:Statement = connection.createStatement()
       statement.setQueryTimeout(30)
       statement.executeUpdate("drop table if exists route")
-      statement.executeUpdate("create table route (id integer primary key AUTOINCREMENT, web_id string not null unique, route_name string, terminal text, starting text, bus_stops)")
+      statement.executeUpdate(
+        "create table route (" +
+          "id integer primary key AUTOINCREMENT, " +
+          "web_id string not null unique, " +
+          "route_name string not null, " +
+          "terminal string, " +
+          "starting string, " +
+          "bus_stops string, " +
+          "area_id integer)")
     } catch {
       case e:Exception =>
         e.printStackTrace()
@@ -67,7 +82,12 @@ class DBAccess {
       val statement:Statement = connection.createStatement()
       statement.setQueryTimeout(30)
       statement.executeUpdate("drop table if exists bus_stop")
-      statement.executeUpdate("create table bus_stop (id integer primary key AUTOINCREMENT, web_id string not null , bus_stop_name string, location string)")
+      statement.executeUpdate(
+        "create table bus_stop (" +
+          "id integer primary key AUTOINCREMENT, " +
+          "web_id string not null , " +
+          "bus_stop_name string not null, " +
+          "location string)")
     } catch {
       case e:Exception =>
         e.printStackTrace()
@@ -82,14 +102,16 @@ class DBAccess {
       val statement:Statement = connection.createStatement()
       statement.setQueryTimeout(30)
       statement.executeUpdate("drop table if exists time_table")
-      statement.executeUpdate("create table time_table (id integer primary key AUTOINCREMENT, bus_stop_id integer, route_id integer, type integer, starting_time string)")
+      statement.executeUpdate(
+        "create table time_table (" +
+          "id integer primary key AUTOINCREMENT, " +
+          "bus_stop_id integer not null, " +
+          "route_id integer not null, " +
+          "type integer not null, " +
+          "starting_time string not null)")
     } catch {
       case e:Exception =>
         e.printStackTrace()
     } finally connection.close()
   }
-
-
-
-
 }
