@@ -114,4 +114,27 @@ class DBAccess {
         e.printStackTrace()
     } finally connection.close()
   }
+
+  def makeTimeSummaryTable() = {
+    var connection:Connection = null
+
+    try {
+      connection = DriverManager.getConnection("jdbc:sqlite:sample.db")
+
+      val statement:Statement = connection.createStatement()
+      statement.setQueryTimeout(30)
+      statement.executeUpdate("drop table if exists time_summary")
+      statement.executeUpdate(
+        "create table time_summary (" +
+          "bus_stop_id integer not null, " +
+          "route_id integer not null, " +
+          "type integer not null, " +
+          "position integer not null)")
+    } catch {
+      case e:Exception =>
+        e.printStackTrace()
+    } finally connection.close()
+  }
+
+
 }

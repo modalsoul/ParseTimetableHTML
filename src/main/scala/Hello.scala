@@ -28,6 +28,7 @@ object Hello {
     db.makeRouteTable
     db.makeBusstopTable
     db.makeTimeTable
+    db.makeTimeSummaryTable
     val route = new Route
 //    val webIdList = new ArrayBuffer[String]
     route.getRouteList.foreach { webId =>

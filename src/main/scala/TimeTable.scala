@@ -42,6 +42,9 @@ class TimeTable {
 
     val timeList = new ArrayBuffer[ArrayBuffer[String]]()
 
+
+    val timeSummary = new ArrayBuffer[(Int, Int, String)]()
+
     trNodeList.foreach { rowNode =>
       val tdNodeList = rowNode \\ "td"
 
@@ -49,7 +52,10 @@ class TimeTable {
         timeList += ArrayBuffer[String]()
         val times = tdNodeList(week).text.replaceAll(" ", "").split("\n").filter(_ != "")
         for (num <- 0 to times.size-1) {
-          timeList(week) += (rowNode \ "th").filter(_ \ "@class" contains Text("hour")).text + ":" +times(num)
+          val hour:Int = (rowNode \ "th").filter(_ \ "@class" contains Text("hour")).text.toInt
+          val time:String = hour + ":" + times(num)
+          timeList(week) += time
+          if (num == 0) timeSummary += (weekTypeNum, hour, time)
         }
       }
     }
@@ -64,8 +70,12 @@ class TimeTable {
     val timeTableDao = new TimeTableDao
 
     timeTableDao.insertTimeTable(insertTimeList)
-
   }
+
+  def makeSummary(list:ArrayBuffer[(Int, Int, String)]) {
+    
+  }
+
   def toNode(str: String): Node = {
     val hp = new HtmlParser
     hp.setNamePolicy(XmlViolationPolicy.ALLOW)
