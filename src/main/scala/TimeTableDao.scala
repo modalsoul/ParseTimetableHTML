@@ -52,4 +52,24 @@ class TimeTableDao {
     list
   }
 
+  def queryTime(busStopId:Int, routeId:Int, weekType:Int):ArrayBuffer[String] = {
+    var connection:Connection = null
+    var list:ArrayBuffer[String] = new ArrayBuffer[String]()
+    try {
+      connection = DriverManager.getConnection("jdbc:sqlite:sample.db")
+
+      val statement:Statement = connection.createStatement()
+      statement.setQueryTimeout(30)
+      val res:ResultSet =statement.executeQuery("select starting_time from time_table where bus_stop_id = " + busStopId + " and route_id = " + routeId + " and type = " + weekType + " order by id")
+      while (res.next()) {
+//        list.addString(res.getString("starting_time"))
+        val startingTime = res.getString("starting_time")
+        list += startingTime
+      }
+    } catch {
+      case e:Exception =>
+        e.printStackTrace()
+    } finally connection.close()
+    list
+  }
 }

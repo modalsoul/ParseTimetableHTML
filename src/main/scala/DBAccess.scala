@@ -129,6 +129,7 @@ class DBAccess {
           "bus_stop_id integer not null, " +
           "route_id integer not null, " +
           "type integer not null, " +
+          "hour integer not null," +
           "position integer not null)")
     } catch {
       case e:Exception =>

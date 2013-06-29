@@ -53,9 +53,11 @@ class TimeTable {
         val times = tdNodeList(week).text.replaceAll(" ", "").split("\n").filter(_ != "")
         for (num <- 0 to times.size-1) {
           val hour:Int = (rowNode \ "th").filter(_ \ "@class" contains Text("hour")).text.toInt
-          val time:String = hour + ":" + times(num)
+          val time:String = hour.toString + ":" + times(num)
           timeList(week) += time
-          if (num == 0) timeSummary += (weekTypeNum, hour, time)
+
+//          if (num == 0) timeSummary += (weekTypeNum, hour, time)
+          if (num == 0) timeSummary.append((week, hour, time))
         }
       }
     }
@@ -70,10 +72,22 @@ class TimeTable {
     val timeTableDao = new TimeTableDao
 
     timeTableDao.insertTimeTable(insertTimeList)
+
+    makeSummary(busStopId, routeId, timeSummary)
   }
 
-  def makeSummary(list:ArrayBuffer[(Int, Int, String)]) {
-    
+  def makeSummary(busStopId:Int, routeId:Int, list:ArrayBuffer[(Int, Int, String)]) {
+    val timetableDao = new TimeTableDao
+    val timeSummaryDao = new TimeSummaryDao
+
+    list.foreach { item =>
+      val timeList = timetableDao.queryTime(busStopId, routeId, item._1)
+
+      val indexNum = timeList.indexOf(item._3)
+
+      timeSummaryDao.insertTimeSummary((busStopId, routeId, item._1, item._2, indexNum))
+    }
+
   }
 
   def toNode(str: String): Node = {

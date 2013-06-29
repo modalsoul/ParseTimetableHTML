@@ -17,7 +17,7 @@ import collection.mutable.ArrayBuffer
  * To change this template use File | Settings | File Templates.
  */
 class BusStop(routeId:String) {
-  val urlPostfix = "http://timetablenavi.keikyu-bus.co.jp/dia0315/timetable/web/any/"
+  val urlPostfix = "http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/any/"
 
   def getBusStopList = {
     val src = Source.fromURL(urlPostfix + routeId + "/", "Shift_JIS")

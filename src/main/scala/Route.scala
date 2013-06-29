@@ -31,7 +31,7 @@ class Route {
 
 
   def getRouteList():ArrayBuffer[String] = {
-    val routeListUrl = "http://timetablenavi.keikyu-bus.co.jp/dia0315/timetable/web/route/"
+    val routeListUrl = "http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/route/"
 
     val src = Source.fromURL(routeListUrl, "Shift_JIS")
 
@@ -75,7 +75,9 @@ class Route {
           route._1 != "1050158011" && route._1 != "1120223011" && route._1 != "1120227012" && route._1 != "1120224011" &&
           route._1 != "1120228012" && route._1 != "1050153011" && route._1 != "1140261011" && route._1 != "1140261012" &&
           route._1 != "1050169011" && route._1 != "8510304011" && route._1 != "8510304012" && route._1 != "8510306012" &&
-          route._1 != "8510306011" && route._1 != "8510305012" && route._1 != "1040061011") tokyoRouteList += route
+          route._1 != "8510306011" && route._1 != "8510305012" && route._1 != "1040061011" && route._1 != "8520318012" &&
+          route._1 != "8520318011" && route._1 != "8530061012" && route._1 != "8530061011" && route._1 != "1160291011" &&
+          route._1 != "8550155011" && route._1 != "8510303011") tokyoRouteList += route
     }
 
     val routeDao = new RouteDao
