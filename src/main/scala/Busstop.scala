@@ -16,11 +16,11 @@ import collection.mutable.ArrayBuffer
  * Time: 12:12
  * To change this template use File | Settings | File Templates.
  */
-class BusStop(routeId:String) {
+class BusStop(routeWebId:String) {
   val urlPostfix = "http://timetablenavi.keikyu-bus.co.jp/dia/timetable/web/any/"
 
   def getBusStopList = {
-    val src = Source.fromURL(urlPostfix + routeId + "/", "Shift_JIS")
+    val src = Source.fromURL(urlPostfix + routeWebId + "/", "Shift_JIS")
     val str = src.mkString
 
     val nodeList = toNode(str)
@@ -46,17 +46,23 @@ class BusStop(routeId:String) {
     busStopDao.insertBusStop(insertBusStopList)
 
     var busStops:String = ""
-    busStopIdList.foreach { web_id =>
-      val busStopWebId = busStopDao.queryBusStopIdByWebId(web_id)
+    busStopIdList.foreach { webId =>
+      val busStopWebId = busStopDao.queryBusStopIdByWebId(webId)
       busStops += busStopWebId + ","
 
       val time = new TimeTable
-      time.getTimetable(routeId, web_id)
+      time.getTimetable(routeWebId, webId)
     }
     busStops = busStops.init
-    val values = (routeId, busStopNameList.head, busStopNameList.last, busStops)
-    val routeDb = new RouteDao
-    routeDb.updateRoute(values)
+    val values = (routeWebId, busStopNameList.head, busStopNameList.last, busStops)
+    val routeDao = new RouteDao
+    routeDao.updateRoute(values)
+
+    val routeId = routeDao.queryRouteByWebId(routeWebId)._1
+    busStopIdList.foreach { webId =>
+      busStopDao.updateBusStopRouteIdByWebId(webId, routeId)
+
+    }
 
   }
   def getBusStopIdList(nodeList:NodeSeq):ArrayBuffer[String] = {

@@ -21,7 +21,7 @@ class BusStopDao {
       statement.setQueryTimeout(30)
       var result = 0
       busStopItems.foreach { item =>
-        result = statement.executeUpdate("insert into bus_stop(web_id, bus_stop_name) values('" + item._1 + "', '" + item._2 +"')")
+        result = statement.executeUpdate("insert into bus_stop(route_id, web_id, bus_stop_name) values('-1', '" + item._1 + "', '" + item._2 +"')")
       }
       println("insert result is :" + result)
     } catch {
@@ -114,4 +114,22 @@ class BusStopDao {
     } finally connection.close()
     webIdList
   }
+
+  def updateBusStopRouteIdByWebId(webId:String, routeId:Integer) = {
+    var connection:Connection = null
+    try {
+      connection = DriverManager.getConnection("jdbc:sqlite:sample.db")
+
+      val statement:Statement = connection.createStatement()
+      statement.setQueryTimeout(30)
+      statement.executeUpdate("update bus_stop set route_id = '" + routeId + "' where web_id = '" + webId + "'")
+
+    } catch {
+      case e:Exception =>
+        e.printStackTrace()
+        false
+    }finally connection.close()
+    true
+  }
+
 }

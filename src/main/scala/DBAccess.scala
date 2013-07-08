@@ -85,7 +85,8 @@ class DBAccess {
       statement.executeUpdate(
         "create table bus_stop (" +
           "id integer primary key AUTOINCREMENT, " +
-          "web_id string not null , " +
+          "route_id integer not null, " +
+          "web_id string not null, " +
           "bus_stop_name string not null, " +
           "location string)")
     } catch {
